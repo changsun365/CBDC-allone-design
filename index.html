@@ -47,19 +47,7 @@
     cursor: pointer;
   }
 
-  .progress {
-    position: fixed; bottom: 24px; left: 50%;
-    transform: translateX(-50%);
-    display: none; gap: 6px; z-index: 100;
-    align-items: center;
-  }
-  .progress.active { display: flex; }
-  .dot {
-    width: 6px; height: 6px; border-radius: 50%;
-    background: rgba(0,0,0,0.18);
-    transition: all 0.2s;
-  }
-  .dot.current { background: #333; width: 18px; border-radius: 3px; }
+
 </style>
 </head>
 <body>
@@ -84,12 +72,7 @@
   </div>
 </div>
 
-<div class="progress" id="progress">
-  <div class="dot current" id="d0"></div>
-  <div class="dot" id="d1"></div>
-  <div class="dot" id="d2"></div>
-  <div class="dot" id="d3"></div>
-</div>
+
 
 <script>
 let current = 0;
@@ -123,7 +106,6 @@ function startViewer(type) {
   document.getElementById('index-page').style.visibility = 'hidden';
   document.getElementById('index-page').style.position = 'fixed';
   document.getElementById('viewer').classList.add('active');
-  document.getElementById('progress').classList.add('active');
   current = 0;
   showScreen(0);
 }
@@ -131,10 +113,8 @@ function startViewer(type) {
 function showScreen(idx) {
   for (let i = 0; i < total; i++) {
     document.getElementById('s' + i).classList.remove('visible');
-    document.getElementById('d' + i).classList.remove('current');
   }
   document.getElementById('s' + idx).classList.add('visible');
-  document.getElementById('d' + idx).classList.add('current');
   document.getElementById('viewer').scrollTop = 0;
 }
 
@@ -144,7 +124,6 @@ function nextScreen() {
     showScreen(current);
   } else {
     document.getElementById('viewer').classList.remove('active');
-    document.getElementById('progress').classList.remove('active');
     const indexPage = document.getElementById('index-page');
     indexPage.style.visibility = 'visible';
     indexPage.style.position = 'relative';
