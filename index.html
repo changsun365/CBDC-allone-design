@@ -48,6 +48,12 @@
   }
 
 
+
+  #viewer-b { display:none; position:fixed; inset:0; z-index:20; overflow-y:auto; background:#fff; }
+  #viewer-b.active { display:block; }
+  .screenB { display:none; }
+  .screenB.visible { display:block; }
+  .screenB img { width:100%; display:block; cursor:pointer; }
 </style>
 </head>
 <body>
@@ -94,7 +100,7 @@ function placeZones() {
   if (!zB) { zB = document.createElement('div'); zB.id = 'zone-b'; zB.className = 'tap-zone'; wrap.appendChild(zB); }
   zB.style.top = (ih * 0.425) + 'px';
   zB.style.height = (ih * 0.085) + 'px';
-  zB.onclick = () => startViewer('B');
+  zB.onclick = () => startViewerB();
 }
 
 if (img.complete) placeZones();
@@ -131,6 +137,43 @@ function nextScreen() {
     placeZones();
   }
 }
+
+let currentB = 0;
+const totalB = 4;
+function startViewerB() {
+  document.getElementById('index-page').style.visibility = 'hidden';
+  document.getElementById('index-page').style.position = 'fixed';
+  document.getElementById('viewer-b').classList.add('active');
+  currentB = 0;
+  showScreenB(0);
+}
+function showScreenB(idx) {
+  for (let i = 0; i < totalB; i++) {
+    document.getElementById('b' + i).classList.remove('visible');
+  }
+  document.getElementById('b' + idx).classList.add('visible');
+  document.getElementById('viewer-b').scrollTop = 0;
+}
+function nextScreenB() {
+  if (currentB < totalB - 1) {
+    currentB++;
+    showScreenB(currentB);
+  } else {
+    document.getElementById('viewer-b').classList.remove('active');
+    const indexPage = document.getElementById('index-page');
+    indexPage.style.visibility = 'visible';
+    indexPage.style.position = 'relative';
+    currentB = 0;
+    placeZones();
+  }
+}
 </script>
+
+<div id="viewer-b">
+  <div class="screenB visible" id="b0"><img src="B Main.png" alt="홈" onclick="nextScreenB()"></div>
+  <div class="screenB" id="b1"><img src="B 지갑관리.png" alt="총 보유 토큰" onclick="nextScreenB()"></div>
+  <div class="screenB" id="b2"><img src="B 송금.png" alt="송금" onclick="nextScreenB()"></div>
+  <div class="screenB" id="b3"><img src="B 송금완료.png" alt="송금완료" onclick="nextScreenB()"></div>
+</div>
 </body>
 </html>
